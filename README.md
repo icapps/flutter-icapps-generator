@@ -1,6 +1,7 @@
 # flutter icapps generator
 
-A dart package to automaticly generate new code when creating a new screen.
+A dart package to automaticly generate new code when creating a new screen. 
+This package should be used in combination with the [icapps template](https://github.com/icapps/flutter-template)
 
 [![pub package](https://img.shields.io/pub/v/icapps_generator.svg)](https://pub.dartlang.org/packages/icapps_generator)
 
