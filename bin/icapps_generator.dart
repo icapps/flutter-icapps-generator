@@ -12,7 +12,8 @@ Params params;
 Future<void> main(List<String> args) async {
   final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
   if (!pubspecYaml.existsSync()) {
-    throw Exception('This program should be run from the root of a flutter/dart project');
+    throw Exception(
+        'This program should be run from the root of a flutter/dart project');
   }
   if (args == null || args.isEmpty) {
     throw Exception('No arguments provided. 1 argument is required.');
@@ -60,14 +61,17 @@ void createFolders() {
 }
 
 void createFiles() {
-  final screenFile = File(join('lib', 'screen', screenName, '${screenName}_screen.dart'));
-  final viewModelFile = File(join('lib', 'viewmodel', screenName, '${screenName}_viewmodel.dart'));
+  final screenFile =
+      File(join('lib', 'screen', screenName, '${screenName}_screen.dart'));
+  final viewModelFile = File(
+      join('lib', 'viewmodel', screenName, '${screenName}_viewmodel.dart'));
 
   if (screenFile.existsSync()) {
     throw Exception('`lib/screen/${screenName}_screen.dart` already exists');
   }
   if (viewModelFile.existsSync()) {
-    throw Exception('`lib/viewmodel/${screenName}_viewmodel.dart` already exists');
+    throw Exception(
+        '`lib/viewmodel/${screenName}_viewmodel.dart` already exists');
   }
   print('Create `lib/screen/${screenName}_screen.dart`');
   screenFile.createSync(recursive: true);
