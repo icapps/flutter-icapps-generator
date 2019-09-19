@@ -1,6 +1,7 @@
-import 'package:icapps_generator_example/screens/user_detail/user_detail_screen.dart';
+import 'package:icapps_generator_example/screen/testing/testing_screen.dart';
 import 'package:icapps_generator_example/widgets/general/flavor_banner.dart';
 import 'package:flutter/material.dart';
+import 'package:icapps_generator_example/screen/user_detail/user_detail_screen.dart';
 
 class MainNavigatorWidget extends StatefulWidget {
   const MainNavigatorWidget({Key key}) : super(key: key);
@@ -47,6 +48,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> {
     switch (settings.name) {
       case UserDetailScreen.routeName:
         return MaterialPageRoute(builder: (context) => FlavorBanner(child: UserDetailScreen()), settings: settings);
+      case TestingScreen.routeName:
+        return MaterialPageRoute(builder: (context) => FlavorBanner(child: TestingScreen()), settings: settings);
       default:
         return null;
     }
@@ -55,6 +58,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> {
   Future<bool> _willPop() async => !await navigationKey.currentState.maybePop();
 
   void goToUserDetail() => navigationKey.currentState.pushReplacementNamed(UserDetailScreen.routeName);
+
+  void goToTesting() => navigationKey.currentState.pushReplacementNamed(TestingScreen.routeName);
 
   void closeDialog() => Navigator.of(context, rootNavigator: true).pop();
 

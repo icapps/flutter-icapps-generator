@@ -12,8 +12,7 @@ Params params;
 Future<void> main(List<String> args) async {
   final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
   if (!pubspecYaml.existsSync()) {
-    throw Exception(
-        'This program should be run from the root of a flutter/dart project');
+    throw Exception('This program should be run from the root of a flutter/dart project');
   }
   if (args == null || args.isEmpty) {
     throw Exception('No arguments provided. 1 argument is required.');
@@ -45,37 +44,34 @@ Future<void> parsePubspec(File pubspecYaml) async {
 }
 
 void createFolders() {
-  final screensFolder = Directory(join('lib', 'screens', screenName));
-  if (!screensFolder.existsSync()) {
-    print('`lib/screens/${screenName}_screen` does not exists');
+  final screenFolder = Directory(join('lib', 'screen', screenName));
+  if (!screenFolder.existsSync()) {
+    print('`lib/screen/${screenName}_screen` does not exists');
     print('Creating folder...');
-    screensFolder.createSync(recursive: true);
+    screenFolder.createSync(recursive: true);
   }
 
-  final viewModelFolder = Directory(join('lib', 'viewmodels', screenName));
+  final viewModelFolder = Directory(join('lib', 'viewmodel', screenName));
   if (!viewModelFolder.existsSync()) {
-    print('`lib/viewmodels/${screenName}_screen` does not exists');
+    print('`lib/viewmodel/${screenName}_screen` does not exists');
     print('Creating folder...');
     viewModelFolder.createSync(recursive: true);
   }
 }
 
 void createFiles() {
-  final screenFile =
-      File(join('lib', 'screens', screenName, '${screenName}_screen.dart'));
-  final viewModelFile = File(
-      join('lib', 'viewmodels', screenName, '${screenName}_viewmodel.dart'));
+  final screenFile = File(join('lib', 'screen', screenName, '${screenName}_screen.dart'));
+  final viewModelFile = File(join('lib', 'viewmodel', screenName, '${screenName}_viewmodel.dart'));
 
   if (screenFile.existsSync()) {
-    throw Exception('`lib/screens/${screenName}_screen.dart` already exists');
+    throw Exception('`lib/screen/${screenName}_screen.dart` already exists');
   }
   if (viewModelFile.existsSync()) {
-    throw Exception(
-        '`lib/viewmodels/${screenName}_viewmodel.dart` already exists');
+    throw Exception('`lib/viewmodel/${screenName}_viewmodel.dart` already exists');
   }
-  print('Create `lib/screens/${screenName}_screen.dart`');
+  print('Create `lib/screen/${screenName}_screen.dart`');
   screenFile.createSync(recursive: true);
-  print('Create `lib/viewmodels/${screenName}_viewmodel.dart`');
+  print('Create `lib/viewmodel/${screenName}_viewmodel.dart`');
   viewModelFile.createSync(recursive: true);
 
   FileCreatorHelper.createViewModelFile(screenName);

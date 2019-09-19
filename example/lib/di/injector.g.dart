@@ -15,5 +15,6 @@ class _$Injector extends Injector {
   void registerViewModelFactories() {
     final Container container = Container();
     container.registerFactory((c) => UserDetailViewModel());
+    container.registerFactory((c) => TestingViewModel());
   }
 }

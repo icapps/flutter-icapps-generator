@@ -1,15 +1,15 @@
-import 'package:icapps_generator_example/viewmodels/user_detail/user_detail_viewmodel.dart';
+import 'package:icapps_generator_example/viewmodel/testing/testing_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:provider/provider.dart';
 
-class UserDetailScreen extends StatelessWidget implements UserDetailNavigator {
-  static const String routeName = 'user_detail';
+class TestingScreen extends StatelessWidget implements TestingNavigator {
+  static const String routeName = 'testing';
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<UserDetailViewModel>(
-      child: Consumer<UserDetailViewModel>(
+    return ChangeNotifierProvider<TestingViewModel>(
+      child: Consumer<TestingViewModel>(
         builder: (context, value, child) => Scaffold(
           body: Center(),
         ),
