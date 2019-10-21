@@ -9,6 +9,7 @@ import 'src/params.dart';
 var screenName = '';
 Params params;
 const NO_NAV_ARG = '--no-nav';
+const NO_KIWI_ARG = '--no-kiwi';
 
 Future<void> main(List<String> args) async {
   final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
@@ -26,13 +27,16 @@ Future<void> main(List<String> args) async {
     print('Screenname is empty.');
     return;
   }
-  var arg2 = args[1];
+  final arg2 = args[1];
+  final arg3 = args[2];
 
-  final generateNav = arg2 != NO_NAV_ARG;
+  final generateNav = arg2 != NO_NAV_ARG && arg3 != NO_NAV_ARG;
+  final generateKiwi = arg2 != NO_KIWI_ARG && arg3 != NO_KIWI_ARG;
 
   await parsePubspec(pubspecYaml);
   print('Options:');
-  print('generateNav: $generateNav');
+  print('Generate MainNavigator: $generateNav');
+  print('Generate Kiwi Dependency Tree: $generateKiwi');
   print('\n');
   print('\n');
   print('Generating a new screen called `$screenName`');
@@ -43,8 +47,10 @@ Future<void> main(List<String> args) async {
     await FileCreatorHelper.updateMainNavigator(params.projectName, screenName);
   }
   print('');
-  print('Generate Kiwi tree...');
-  await FlutterHelper.regenerateKiwi();
+  if (generateKiwi) {
+    print('Generate Kiwi tree...');
+    await FlutterHelper.regenerateKiwi();
+  }
   print('Done!!!');
 }
 
