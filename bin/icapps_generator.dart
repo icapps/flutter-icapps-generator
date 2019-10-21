@@ -8,6 +8,7 @@ import 'src/params.dart';
 
 var screenName = '';
 Params params;
+const NO_NAV_ARG = '--no-nav';
 
 Future<void> main(List<String> args) async {
   final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
@@ -25,14 +26,22 @@ Future<void> main(List<String> args) async {
     print('Screenname is empty.');
     return;
   }
+  var arg2 = args[1];
+
+  final generateNav = arg2 != NO_NAV_ARG;
 
   await parsePubspec(pubspecYaml);
-
+  print('Options:');
+  print('generateNav: $generateNav');
+  print('\n');
+  print('\n');
   print('Generating a new screen called `$screenName`');
   createFolders();
   createFiles();
   await FileCreatorHelper.updateInjector(params.projectName, screenName);
-  await FileCreatorHelper.updateMainNavigator(params.projectName, screenName);
+  if (generateNav) {
+    await FileCreatorHelper.updateMainNavigator(params.projectName, screenName);
+  }
   print('');
   print('Generate Kiwi tree...');
   await FlutterHelper.regenerateKiwi();
