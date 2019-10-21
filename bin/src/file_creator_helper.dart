@@ -34,8 +34,8 @@ class FileCreatorHelper {
     final sb = StringBuffer()
       ..writeln(
           "import 'package:$projectName/viewmodel/$screenName/${screenName}_viewmodel.dart';")
+      ..writeln("import 'package:$projectName/di/kiwi_container.dart';")
       ..writeln("import 'package:flutter/material.dart';")
-      ..writeln("import 'package:kiwi/kiwi.dart' as kiwi;")
       ..writeln("import 'package:provider/provider.dart';")
       ..writeln()
       ..writeln(
@@ -53,7 +53,7 @@ class FileCreatorHelper {
       ..writeln('        ),')
       ..writeln('      ),')
       ..writeln(
-          '      builder: (context) => kiwi.Container().resolve()..init(this),')
+          '      builder: (context) => KiwiContainer.resolve()..init(this),')
       ..writeln('    );')
       ..writeln('  }')
       ..writeln('}');
