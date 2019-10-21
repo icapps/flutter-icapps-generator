@@ -33,6 +33,18 @@ flutter packages pub run icapps_generator your_screen_name
 pub run icapps_generator your_screen_name
 ```
 
+### Run with extra options
+
+Do not add your newly generated screen to the MainNavigatorWidget
+```
+--no-nav
+```
+
+Do not regenerate the kiwi dependency tree
+```
+--no-kiwi
+```
+
 ### Result
 
 Code will be generated:
