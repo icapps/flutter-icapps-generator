@@ -119,7 +119,7 @@ class FileCreatorHelper {
           '  void closeDialog() => Navigator.of(context, rootNavigator: true).pop();') {
         sb
           ..writeln(
-              '  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState.pushReplacementNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
+              '  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState.pushNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
           ..writeln();
       }
       if (l !=
