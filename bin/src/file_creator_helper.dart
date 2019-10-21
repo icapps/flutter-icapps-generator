@@ -98,7 +98,7 @@ class FileCreatorHelper {
       ..writeln(
           "import 'package:$projectName/screen/$screenName/${screenName}_screen.dart';")
       ..writeln(
-          "import 'package:$projectName/widgets/general/flavor_banner.dart';");
+          "import 'package:$projectName/widget/general/flavor_banner.dart';");
     var writeOnGenerateRoute = false;
     await mainNavigatorFile
         .openRead()
