@@ -1,8 +1,18 @@
 # Changelog
 
-## [0.2.0] - 2019-10-21
+## [0.2.1] - 2019-10-21
 ### Fixed
--
+- #12 crash when no arguments were given 
+
+## [0.2.0] - 2019-10-21
+### Added
+- Option to skip the main navigator update `--no-nav`
+- Option to skip the kiwi dependency tree update `--no-kiwi`
+
+### Fixed
+- #2 `widgets` import
+- #3 fixed a bug with pushNamedReplacement instead of pushNamed
+- #4 use the KiwiContainer instead
 
 ## [0.1.0] - 2019-09-18
 ### Fixed

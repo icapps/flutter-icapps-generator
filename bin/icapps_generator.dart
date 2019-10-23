@@ -19,16 +19,21 @@ Future<void> main(List<String> args) async {
   }
   if (args == null || args.isEmpty) {
     throw Exception('No arguments provided. 1 argument is required.');
-  } else if (args.length > 1) {
+  } else if (args.length > 3) {
     throw Exception('${args.length} arguments are provided. Only 1 is allowed');
   }
   screenName = args[0];
   if (screenName.isEmpty) {
-    print('Screenname is empty.');
-    return;
+    throw Exception('Screenname is empty.');
   }
-  final arg2 = args[1];
-  final arg3 = args[2];
+  String arg2;
+  String arg3;
+  if (args.length > 1) {
+    arg2 = args[1];
+  }
+  if (args.length > 2) {
+    arg3 = args[2];
+  }
 
   final generateNav = arg2 != NO_NAV_ARG && arg3 != NO_NAV_ARG;
   final generateKiwi = arg2 != NO_KIWI_ARG && arg3 != NO_KIWI_ARG;
