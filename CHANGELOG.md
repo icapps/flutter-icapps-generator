@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.0] - 2019-10-21
+### Fixed
+- #14 where provider changed builder to create 
+
 ## [0.2.1] - 2019-10-21
 ### Fixed
 - #12 crash when no arguments were given 
