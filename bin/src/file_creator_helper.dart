@@ -53,7 +53,7 @@ class FileCreatorHelper {
       ..writeln('        ),')
       ..writeln('      ),')
       ..writeln(
-          '      builder: (context) => KiwiContainer.resolve()..init(this),')
+          '      create: (context) => KiwiContainer.resolve()..init(this),')
       ..writeln('    );')
       ..writeln('  }')
       ..writeln('}');
