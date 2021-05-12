@@ -1,31 +1,25 @@
 import 'package:icapps_generator_example/screen/testing/testing_screen.dart';
-import 'package:icapps_generator_example/widgets/general/flavor_banner.dart';
-import 'package:flutter/material.dart';
+import 'package:icapps_generator_example/widget/general/flavor_banner.dart';
 import 'package:icapps_generator_example/screen/user_detail/user_detail_screen.dart';
+import 'package:flutter/material.dart';
 
 class MainNavigatorWidget extends StatefulWidget {
-  const MainNavigatorWidget({Key key}) : super(key: key);
+  const MainNavigatorWidget({Key? key}) : super(key: key);
 
   @override
   MainNavigatorWidgetState createState() => MainNavigatorWidgetState();
 
-  static MainNavigatorWidgetState of(context, {rootNavigator = false, nullOk = false}) {
-    final MainNavigatorWidgetState navigator = rootNavigator
-        ? context.rootAncestorStateOfType(
-            const TypeMatcher<MainNavigatorWidgetState>(),
-          )
-        : context.ancestorStateOfType(
-            const TypeMatcher<MainNavigatorWidgetState>(),
-          );
+  static MainNavigatorWidgetState of(BuildContext context, {bool rootNavigator = false}) {
+    final navigator = rootNavigator ? context.findRootAncestorStateOfType<MainNavigatorWidgetState>() : context.findAncestorStateOfType<MainNavigatorWidgetState>();
     assert(() {
-      if (navigator == null && !nullOk) {
-        throw FlutterError('MainNavigatorWidget operation requested with a context that does not include a MainNavigatorWidget.\n'
-            'The context used to push or pop routes from the MainNavigatorWidget must be that of a '
+      if (navigator == null) {
+        throw FlutterError('MainNavigation operation requested with a context that does not include a MainNavigation.\n'
+            'The context used to push or pop routes from the MainNavigation must be that of a '
             'widget that is a descendant of a MainNavigatorWidget widget.');
       }
       return true;
     }());
-    return navigator;
+    return navigator!;
   }
 }
 
@@ -44,7 +38,7 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> {
     );
   }
 
-  Route onGenerateRoute(RouteSettings settings) {
+  Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case UserDetailScreen.routeName:
         return MaterialPageRoute(builder: (context) => FlavorBanner(child: UserDetailScreen()), settings: settings);
@@ -55,13 +49,19 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> {
     }
   }
 
-  Future<bool> _willPop() async => !await navigationKey.currentState.maybePop();
+  Future<bool> _willPop() async {
+    final navigationState = navigationKey.currentState;
+    if (navigationState == null) {
+      return false;
+    }
+    return !await navigationState.maybePop();
+  }
 
-  void goToUserDetail() => navigationKey.currentState.pushReplacementNamed(UserDetailScreen.routeName);
+  void goToUserDetail() => navigationKey.currentState?.pushReplacementNamed(UserDetailScreen.routeName);
 
-  void goToTesting() => navigationKey.currentState.pushReplacementNamed(TestingScreen.routeName);
+  void goToTesting() => navigationKey.currentState?.pushReplacementNamed(TestingScreen.routeName);
 
   void closeDialog() => Navigator.of(context, rootNavigator: true).pop();
 
-  void goBack<T>({result}) => navigationKey.currentState.pop(result);
+  void goBack<T>({T? result}) => navigationKey.currentState?.pop(result);
 }

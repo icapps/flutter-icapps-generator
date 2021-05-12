@@ -1,21 +1,14 @@
-import 'package:icapps_generator_example/viewmodel/testing/testing_viewmodel.dart';
-import 'package:icapps_generator_example/util/util.dart';
-import 'package:icapps_generator_example/viewmodel/user_detail/user_detail_viewmodel.dart';
-import 'package:kiwi/kiwi.dart';
+import 'package:get_it/get_it.dart';
+import 'package:icapps_generator_example/di/injector.config.dart';
+import 'package:injectable/injectable.dart';
 
-part 'injector.g.dart';
+final getIt = GetIt.instance;
 
-abstract class Injector {
-  @Register.singleton(Util)
-  void registerCommonDependencies();
-
-  @Register.factory(UserDetailViewModel)
-  @Register.factory(TestingViewModel)
-  void registerViewModelFactories();
-}
-
-void setupDependencyTree() {
-  _$Injector()
-    ..registerCommonDependencies()
-    ..registerViewModelFactories();
+@InjectableInit(
+  initializerName: r'$initGetIt',
+  generateForDir: ['lib'],
+)
+Future<void> configureDependencies(String environment) async {
+  $initGetIt(getIt, environment: environment);
+  await getIt.allReady();
 }
