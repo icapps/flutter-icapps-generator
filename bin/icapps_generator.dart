@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 import 'src/file_creator_helper.dart';
+import 'src/flutter_helper.dart';
 import 'src/params.dart';
 
 var screenName = '';
 late final Params params;
 const NO_NAV_ARG = '--no-nav';
-const NO_INJECTABLE_ARG = '--no-di';
+const NO_DI_ARG = '--no-di';
 const MAX_ARGUMENTS_COUNT = 3;
 
 Future<void> main(List<String>? args) async {
@@ -35,7 +36,7 @@ Future<void> main(List<String>? args) async {
   }
 
   final generateNav = arg2 != NO_NAV_ARG && arg3 != NO_NAV_ARG;
-  final generateInjectable = arg2 != NO_INJECTABLE_ARG && arg3 != NO_INJECTABLE_ARG;
+  final generateInjectable = arg2 != NO_DI_ARG && arg3 != NO_DI_ARG;
 
   await parsePubspec(pubspecYaml);
   print('Options:');
@@ -46,11 +47,15 @@ Future<void> main(List<String>? args) async {
   print('Generating a new screen called `$screenName`');
   createFolders();
   createFiles(generateInjectable: generateInjectable);
-  // await FileCreatorHelper.updateInjector(params.projectName, screenName);
   if (generateNav) {
     await FileCreatorHelper.updateMainNavigator(params.projectName, screenName);
+    await FileCreatorHelper.updateMainNavigation(params.projectName, screenName);
   }
   print('');
+  if (generateInjectable) {
+    print('Generate injectable tree...');
+    await FlutterHelper.regenerateInjectable();
+  }
   print('Done!!!');
 }
 

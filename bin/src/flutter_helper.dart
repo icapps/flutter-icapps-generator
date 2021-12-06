@@ -3,7 +3,7 @@ import 'dart:io';
 class FlutterHelper {
   FlutterHelper._();
 
-  static Future<void> regenerateKiwi() async {
+  static Future<void> regenerateInjectable() async {
     final result = Process.runSync('flutter', [
       'packages',
       'pub',
@@ -13,7 +13,7 @@ class FlutterHelper {
       '--delete-conflicting-outputs'
     ]);
     if (result.exitCode == 0) {
-      print('Succesfully regenerated the kiwi tree');
+      print('Succesfully regenerated the GetIt tree');
       print('');
     } else {
       print(

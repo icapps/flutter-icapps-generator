@@ -11,7 +11,10 @@ class FileCreatorHelper {
   static void createViewModelFile(String screenName, {required bool generateInjectable}) {
     final sb = StringBuffer()..writeln("import 'package:icapps_architecture/icapps_architecture.dart';");
     if (generateInjectable) {
-      sb..writeln("import 'package:injectable/injectable.dart';")..writeln()..writeln('@injectable');
+      sb
+        ..writeln("import 'package:injectable/injectable.dart';")
+        ..writeln()
+        ..writeln('@injectable');
     } else {
       sb.writeln();
     }
@@ -40,13 +43,22 @@ class FileCreatorHelper {
     }
     sb
       ..writeln()
-      ..writeln('class ${CaseUtil.getCamelcase(screenName)}Screen extends StatelessWidget implements ${CaseUtil.getCamelcase(screenName)}Navigator {')
+      ..writeln()
+      ..writeln('class ${CaseUtil.getCamelcase(screenName)}Screen extends StatefulWidget {')
       ..writeln("  static const String routeName = '$screenName';")
       ..writeln()
+      ..writeln('  const ${CaseUtil.getCamelcase(screenName)}Screen({Key? key}) : super(key: key);')
+      ..writeln()
+      ..writeln('  @override')
+      ..writeln('  _${CaseUtil.getCamelcase(screenName)}ScreenState createState() => _${CaseUtil.getCamelcase(screenName)}ScreenState();')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+          'class _${CaseUtil.getCamelcase(screenName)}ScreenState extends State<${CaseUtil.getCamelcase(screenName)}Screen> implements ${CaseUtil.getCamelcase(screenName)}Navigator {')
       ..writeln('  @override')
       ..writeln('  Widget build(BuildContext context) {')
       ..writeln('    return ProviderWidget<${CaseUtil.getCamelcase(screenName)}ViewModel>(')
-      ..writeln('      create: () => GetIt.I()..init(this),')
+      ..writeln('      create: () => GetIt.I.get()..init(this),')
       ..writeln('      childBuilderWithViewModel: (context, viewModel, theme, localization) => const Scaffold(')
       ..writeln('        body: Center(),')
       ..writeln('      ),')
@@ -69,6 +81,7 @@ class FileCreatorHelper {
       ..writeln("import 'package:$projectName/screen/$screenName/${screenName}_screen.dart';")
       ..writeln("import 'package:$projectName/widget/general/flavor_banner.dart';");
     var writeOnGenerateRoute = false;
+    var overrideMissing = false;
     await mainNavigatorFile.openRead().transform(const Utf8Decoder()).transform(const LineSplitter()).forEach((l) {
       if (l == '  Route? onGenerateRoute(RouteSettings settings) {') {
         writeOnGenerateRoute = true;
@@ -76,15 +89,44 @@ class FileCreatorHelper {
       if (l == '      default:' && writeOnGenerateRoute) {
         sb
           ..writeln('      case ${CaseUtil.getCamelcase(screenName)}Screen.routeName:')
-          ..writeln('        return MaterialPageRoute(builder: (context) => FlavorBanner(child: ${CaseUtil.getCamelcase(screenName)}Screen()), settings: settings);');
+          ..writeln('        return MaterialPageRoute(builder: (context) => const FlavorBanner(child: ${CaseUtil.getCamelcase(screenName)}Screen()), settings: settings);');
       }
-      if (l == '  void closeDialog() => Navigator.of(context, rootNavigator: true).pop();') {
-        sb..writeln('  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState?.pushNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')..writeln();
+      if (l == '  void closeDialog<T>({T? result}) => Navigator.of(context, rootNavigator: true).pop(result);') {
+        overrideMissing = true;
+        sb
+          ..writeln('  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState?.pushReplacementNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
+          ..writeln();
       }
       if (l != "import 'package:$projectName/widgets/general/flavor_banner.dart';") {
-        sb.writeln(l);
+        if (overrideMissing) {
+          overrideMissing = false;
+          sb
+            ..writeln('  @override')
+            ..writeln(l);
+        } else {
+          sb.writeln(l);
+        }
       }
     }).whenComplete(() {});
     mainNavigatorFile.writeAsStringSync(sb.toString());
+  }
+
+  static Future<void> updateMainNavigation(String projectName, String screenName) async {
+    final mainNavigationFile = File(join('lib', 'navigator', 'main_navigation.dart'));
+    if (!mainNavigationFile.existsSync()) {
+      print('`lib/navigator/main_navigation.dart` does not exists. Can not add navigation logic.');
+      return;
+    }
+
+    final sb = StringBuffer();
+    await mainNavigationFile.openRead().transform(const Utf8Decoder()).transform(const LineSplitter()).forEach((l) {
+      sb.writeln(l);
+      if (l == '  void goBack<T>({T? result});') {
+        sb
+          ..writeln()
+          ..writeln('  void goTo${CaseUtil.getCamelcase(screenName)}();');
+      }
+    }).whenComplete(() {});
+    mainNavigationFile.writeAsStringSync(sb.toString());
   }
 }
