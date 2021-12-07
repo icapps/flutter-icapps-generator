@@ -3,7 +3,7 @@ import 'dart:io';
 class FlutterHelper {
   FlutterHelper._();
 
-  static Future<void> regenerateInjectable() async {
+  static Future<void> regenerateDI() async {
     final result = Process.runSync('flutter', [
       'packages',
       'pub',

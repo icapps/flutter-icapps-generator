@@ -41,26 +41,26 @@ Future<void> main(List<String>? args) async {
   }
 
   final generateNav = arg2 != NO_NAV_ARG && arg3 != NO_NAV_ARG && arg4 != NO_NAV_ARG;
-  final generateInjectable = arg2 != NO_DI_ARG && arg3 != NO_DI_ARG && arg4 != NO_DI_ARG;
+  final generateDI = arg2 != NO_DI_ARG && arg3 != NO_DI_ARG && arg4 != NO_DI_ARG;
   final initFuture = arg2 == INIT_FUTURE_ARG || arg3 == INIT_FUTURE_ARG || arg4 == INIT_FUTURE_ARG;
 
   await parsePubspec(pubspecYaml);
   print('Options:');
   print('Generate MainNavigator: $generateNav');
-  print('Generate injectable: $generateInjectable');
+  print('Generate dependency injection: $generateDI');
   print('\n');
   print('\n');
   print('Generating a new screen called `$screenName`');
   createFolders();
-  createFiles(generateInjectable: generateInjectable, initFuture: initFuture);
+  createFiles(generateDI: generateDI, initFuture: initFuture);
   if (generateNav) {
     await FileCreatorHelper.updateMainNavigator(params.projectName, screenName);
     await FileCreatorHelper.updateMainNavigation(params.projectName, screenName);
   }
   print('');
-  if (generateInjectable) {
-    print('Generate injectable tree...');
-    await FlutterHelper.regenerateInjectable();
+  if (generateDI) {
+    print('Generate dependency injection tree...');
+    await FlutterHelper.regenerateDI();
   }
   print('Done!!!');
 }
@@ -86,7 +86,7 @@ void createFolders() {
   }
 }
 
-void createFiles({required bool generateInjectable, required bool initFuture}) {
+void createFiles({required bool generateDI, required bool initFuture}) {
   final screenFile = File(join('lib', 'screen', screenName, '${screenName}_screen.dart'));
   final viewModelFile = File(join('lib', 'viewmodel', screenName, '${screenName}_viewmodel.dart'));
 
@@ -101,6 +101,6 @@ void createFiles({required bool generateInjectable, required bool initFuture}) {
   print('Create `lib/viewmodel/${screenName}_viewmodel.dart`');
   viewModelFile.createSync(recursive: true);
 
-  FileCreatorHelper.createViewModelFile(screenName, generateInjectable: generateInjectable, initFuture: initFuture);
-  FileCreatorHelper.createScreenFile(params.projectName, screenName, generateInjectable: generateInjectable);
+  FileCreatorHelper.createViewModelFile(screenName, generateDI: generateDI, initFuture: initFuture);
+  FileCreatorHelper.createScreenFile(params.projectName, screenName, generateDI: generateDI);
 }

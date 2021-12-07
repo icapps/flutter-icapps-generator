@@ -9,3 +9,4 @@
 **/packages
 **/pubspec.lock
 **/.packages
+**/ios/Flutter/flutter_export_environment.sh

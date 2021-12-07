@@ -8,9 +8,9 @@ import 'case_util.dart';
 class FileCreatorHelper {
   FileCreatorHelper._();
 
-  static void createViewModelFile(String screenName, {required bool generateInjectable, required bool initFuture}) {
+  static void createViewModelFile(String screenName, {required bool generateDI, required bool initFuture}) {
     final sb = StringBuffer()..writeln("import 'package:icapps_architecture/icapps_architecture.dart';");
-    if (generateInjectable) {
+    if (generateDI) {
       sb
         ..writeln("import 'package:injectable/injectable.dart';")
         ..writeln()
@@ -25,7 +25,7 @@ class FileCreatorHelper {
     if (initFuture) {
       sb.writeln('  Future<void> init(${CaseUtil.getCamelcase(screenName)}Navigator navigator) async {');
     } else {
-      sb.writeln('  init(${CaseUtil.getCamelcase(screenName)}Navigator navigator) {');
+      sb.writeln('  void init(${CaseUtil.getCamelcase(screenName)}Navigator navigator) {');
     }
     sb
       ..writeln('    _navigator = navigator;')
@@ -38,12 +38,12 @@ class FileCreatorHelper {
     File(join('lib', 'viewmodel', screenName, '${screenName}_viewmodel.dart')).writeAsStringSync(sb.toString());
   }
 
-  static void createScreenFile(String projectName, String screenName, {required bool generateInjectable}) {
+  static void createScreenFile(String projectName, String screenName, {required bool generateDI}) {
     final sb = StringBuffer()
       ..writeln("import 'package:$projectName/viewmodel/$screenName/${screenName}_viewmodel.dart';")
       ..writeln("import 'package:$projectName/widget/provider/provider_widget.dart';")
       ..writeln("import 'package:flutter/material.dart';");
-    if (generateInjectable) {
+    if (generateDI) {
       sb.writeln("import 'package:get_it/get_it.dart';");
     }
     sb
@@ -87,32 +87,37 @@ class FileCreatorHelper {
       ..writeln("import 'package:$projectName/widget/general/flavor_banner.dart';");
     var writeOnGenerateRoute = false;
     var overrideMissing = false;
-    await mainNavigatorFile.openRead().transform(const Utf8Decoder()).transform(const LineSplitter()).forEach((l) {
-      if (l == '  Route? onGenerateRoute(RouteSettings settings) {') {
-        writeOnGenerateRoute = true;
-      }
-      if (l == '      default:' && writeOnGenerateRoute) {
-        sb
-          ..writeln('      case ${CaseUtil.getCamelcase(screenName)}Screen.routeName:')
-          ..writeln('        return MaterialPageRoute(builder: (context) => const FlavorBanner(child: ${CaseUtil.getCamelcase(screenName)}Screen()), settings: settings);');
-      }
-      if (l == '  void closeDialog<T>({T? result}) => Navigator.of(context, rootNavigator: true).pop(result);') {
-        overrideMissing = true;
-        sb
-          ..writeln('  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState?.pushReplacementNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
-          ..writeln();
-      }
-      if (l != "import 'package:$projectName/widgets/general/flavor_banner.dart';") {
-        if (overrideMissing) {
-          overrideMissing = false;
-          sb
-            ..writeln('  @override')
-            ..writeln(l);
-        } else {
-          sb.writeln(l);
-        }
-      }
-    }).whenComplete(() {});
+    await mainNavigatorFile.readAsString().then(
+          (value) => const LineSplitter().convert(value).forEach(
+            (l) {
+              if (l == '  Route? onGenerateRoute(RouteSettings settings) {') {
+                writeOnGenerateRoute = true;
+              }
+              if (l == '      default:' && writeOnGenerateRoute) {
+                sb
+                  ..writeln('      case ${CaseUtil.getCamelcase(screenName)}Screen.routeName:')
+                  ..writeln('        return MaterialPageRoute(builder: (context) => const FlavorBanner(child: ${CaseUtil.getCamelcase(screenName)}Screen()), settings: settings);');
+              }
+              if (l == '  void closeDialog<T>({T? result}) => Navigator.of(context, rootNavigator: true).pop(result);') {
+                overrideMissing = true;
+                sb
+                  ..writeln(
+                      '  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState?.pushReplacementNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
+                  ..writeln();
+              }
+              if (l != "import 'package:$projectName/widgets/general/flavor_banner.dart';") {
+                if (overrideMissing) {
+                  overrideMissing = false;
+                  sb
+                    ..writeln('  @override')
+                    ..writeln(l);
+                } else {
+                  sb.writeln(l);
+                }
+              }
+            },
+          ),
+        );
     mainNavigatorFile.writeAsStringSync(sb.toString());
   }
 
@@ -122,16 +127,19 @@ class FileCreatorHelper {
       print('`lib/navigator/main_navigation.dart` does not exists. Can not add navigation logic.');
       return;
     }
-
     final sb = StringBuffer();
-    await mainNavigationFile.openRead().transform(const Utf8Decoder()).transform(const LineSplitter()).forEach((l) {
-      sb.writeln(l);
-      if (l == '  void goBack<T>({T? result});') {
-        sb
-          ..writeln()
-          ..writeln('  void goTo${CaseUtil.getCamelcase(screenName)}();');
-      }
-    }).whenComplete(() {});
+    await mainNavigationFile.readAsString().then(
+          (value) => const LineSplitter().convert(value).forEach(
+            (l) {
+              sb.writeln(l);
+              if (l == '  void goBack<T>({T? result});') {
+                sb
+                  ..writeln()
+                  ..writeln('  void goTo${CaseUtil.getCamelcase(screenName)}();');
+              }
+            },
+          ),
+        );
     mainNavigationFile.writeAsStringSync(sb.toString());
   }
 }
