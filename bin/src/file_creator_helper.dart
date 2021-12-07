@@ -8,7 +8,7 @@ import 'case_util.dart';
 class FileCreatorHelper {
   FileCreatorHelper._();
 
-  static void createViewModelFile(String screenName, {required bool generateInjectable}) {
+  static void createViewModelFile(String screenName, {required bool generateInjectable, required bool initFuture}) {
     final sb = StringBuffer()..writeln("import 'package:icapps_architecture/icapps_architecture.dart';");
     if (generateInjectable) {
       sb
@@ -21,8 +21,13 @@ class FileCreatorHelper {
     sb
       ..writeln('class ${CaseUtil.getCamelcase(screenName)}ViewModel with ChangeNotifierEx {')
       ..writeln('  late final ${CaseUtil.getCamelcase(screenName)}Navigator _navigator;')
-      ..writeln()
-      ..writeln('  Future<void> init(${CaseUtil.getCamelcase(screenName)}Navigator navigator) async {')
+      ..writeln();
+    if (initFuture) {
+      sb.writeln('  Future<void> init(${CaseUtil.getCamelcase(screenName)}Navigator navigator) async {');
+    } else {
+      sb.writeln('  init(${CaseUtil.getCamelcase(screenName)}Navigator navigator) {');
+    }
+    sb
       ..writeln('    _navigator = navigator;')
       ..writeln('  }')
       ..writeln('}')

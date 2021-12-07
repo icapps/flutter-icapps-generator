@@ -10,7 +10,8 @@ var screenName = '';
 late final Params params;
 const NO_NAV_ARG = '--no-nav';
 const NO_DI_ARG = '--no-di';
-const MAX_ARGUMENTS_COUNT = 3;
+const INIT_FUTURE_ARG = '--init-future';
+const MAX_ARGUMENTS_COUNT = 4;
 
 Future<void> main(List<String>? args) async {
   final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
@@ -28,15 +29,20 @@ Future<void> main(List<String>? args) async {
   }
   String? arg2;
   String? arg3;
+  String? arg4;
   if (args.length > 1) {
     arg2 = args[1];
   }
   if (args.length > 2) {
     arg3 = args[2];
   }
+  if (args.length > 3) {
+    arg4 = args[3];
+  }
 
-  final generateNav = arg2 != NO_NAV_ARG && arg3 != NO_NAV_ARG;
-  final generateInjectable = arg2 != NO_DI_ARG && arg3 != NO_DI_ARG;
+  final generateNav = arg2 != NO_NAV_ARG && arg3 != NO_NAV_ARG && arg4 != NO_NAV_ARG;
+  final generateInjectable = arg2 != NO_DI_ARG && arg3 != NO_DI_ARG && arg4 != NO_DI_ARG;
+  final initFuture = arg2 == INIT_FUTURE_ARG || arg3 == INIT_FUTURE_ARG || arg4 == INIT_FUTURE_ARG;
 
   await parsePubspec(pubspecYaml);
   print('Options:');
@@ -46,7 +52,7 @@ Future<void> main(List<String>? args) async {
   print('\n');
   print('Generating a new screen called `$screenName`');
   createFolders();
-  createFiles(generateInjectable: generateInjectable);
+  createFiles(generateInjectable: generateInjectable, initFuture: initFuture);
   if (generateNav) {
     await FileCreatorHelper.updateMainNavigator(params.projectName, screenName);
     await FileCreatorHelper.updateMainNavigation(params.projectName, screenName);
@@ -80,7 +86,7 @@ void createFolders() {
   }
 }
 
-void createFiles({required bool generateInjectable}) {
+void createFiles({required bool generateInjectable, required bool initFuture}) {
   final screenFile = File(join('lib', 'screen', screenName, '${screenName}_screen.dart'));
   final viewModelFile = File(join('lib', 'viewmodel', screenName, '${screenName}_viewmodel.dart'));
 
@@ -95,6 +101,6 @@ void createFiles({required bool generateInjectable}) {
   print('Create `lib/viewmodel/${screenName}_viewmodel.dart`');
   viewModelFile.createSync(recursive: true);
 
-  FileCreatorHelper.createViewModelFile(screenName, generateInjectable: generateInjectable);
+  FileCreatorHelper.createViewModelFile(screenName, generateInjectable: generateInjectable, initFuture: initFuture);
   FileCreatorHelper.createScreenFile(params.projectName, screenName, generateInjectable: generateInjectable);
 }
