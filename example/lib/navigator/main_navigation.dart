@@ -10,4 +10,5 @@ abstract class MainNavigation {
   void goToUserDetail();
 }
 
-mixin MainNavigationMixin<T extends StatefulWidget> on State<T> implements MainNavigation {}
+mixin MainNavigationMixin<T extends StatefulWidget> on State<T>
+    implements MainNavigation {}

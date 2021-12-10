@@ -12,12 +12,14 @@ class TestingScreen extends StatefulWidget {
   _TestingScreenState createState() => _TestingScreenState();
 }
 
-class _TestingScreenState extends State<TestingScreen> implements TestingNavigator {
+class _TestingScreenState extends State<TestingScreen>
+    implements TestingNavigator {
   @override
   Widget build(BuildContext context) {
     return ProviderWidget<TestingViewModel>(
       create: () => GetIt.I.get()..init(this),
-      childBuilderWithViewModel: (context, viewModel, theme, localization) => const Scaffold(
+      childBuilderWithViewModel: (context, viewModel, theme, localization) =>
+          const Scaffold(
         body: Center(),
       ),
     );

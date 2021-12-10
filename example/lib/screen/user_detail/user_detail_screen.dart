@@ -12,12 +12,14 @@ class UserDetailScreen extends StatefulWidget {
   _UserDetailScreenState createState() => _UserDetailScreenState();
 }
 
-class _UserDetailScreenState extends State<UserDetailScreen> implements UserDetailNavigator {
+class _UserDetailScreenState extends State<UserDetailScreen>
+    implements UserDetailNavigator {
   @override
   Widget build(BuildContext context) {
     return ProviderWidget<UserDetailViewModel>(
       create: () => GetIt.I.get()..init(this),
-      childBuilderWithViewModel: (context, viewModel, theme, localization) => const Scaffold(
+      childBuilderWithViewModel: (context, viewModel, theme, localization) =>
+          const Scaffold(
         body: Center(),
       ),
     );
