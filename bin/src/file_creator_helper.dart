@@ -132,11 +132,6 @@ class FileCreatorHelper {
                       '  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState?.pushReplacementNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
                   ..writeln();
               }
-              if(l == '  RouteNames._();'){
-                sb
-                  ..writeln("  static const testingScreen = '${CaseUtil.seperateWithUnderscore(screenName)}';")
-                  ..writeln();
-              }
               if (l !=
                   "import 'package:$projectName/widgets/general/flavor_banner.dart';") {
                 if (overrideMissing) {
@@ -147,6 +142,9 @@ class FileCreatorHelper {
                 } else {
                   sb.writeln(l);
                 }
+              }
+              if (l == '  RouteNames._();') {
+                sb.writeln("  static const $screenName = '${CaseUtil.seperateWithUnderscore(screenName)}';");
               }
             },
           ),
