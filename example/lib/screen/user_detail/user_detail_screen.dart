@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:icapps_generator_example/navigator/main_navigator.dart';
+import 'package:icapps_generator_example/navigator/route_names.dart';
 import 'package:icapps_generator_example/viewmodel/user_detail/user_detail_viewmodel.dart';
 import 'package:icapps_generator_example/widget/provider/provider_widget.dart';
 

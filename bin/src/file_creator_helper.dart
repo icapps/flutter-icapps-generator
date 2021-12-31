@@ -54,7 +54,7 @@ class FileCreatorHelper {
           "import 'package:$projectName/viewmodel/$screenName/${screenName}_viewmodel.dart';")
       ..writeln(
           "import 'package:$projectName/widget/provider/provider_widget.dart';")
-      ..writeln("import 'package:$projectName/navigator/main_navigator.dart';")
+      ..writeln("import 'package:$projectName/navigator/route_names.dart';")
       ..writeln("import 'package:flutter/material.dart';");
     if (generateDI) {
       sb.writeln("import 'package:get_it/get_it.dart';");
@@ -64,7 +64,8 @@ class FileCreatorHelper {
       ..writeln()
       ..writeln(
           'class ${CaseUtil.getCamelcase(screenName)}Screen extends StatefulWidget {')
-      ..writeln('  static const String routeName = RouteNames.${CaseUtil.getCamelcase(screenName, capitalizeFirstLetter: false)}Screen;')
+      ..writeln(
+          '  static const String routeName = RouteNames.${CaseUtil.getCamelcase(screenName, capitalizeFirstLetter: false)}Screen;')
       ..writeln()
       ..writeln(
           '  const ${CaseUtil.getCamelcase(screenName)}Screen({Key? key}) : super(key: key);')
@@ -143,13 +144,33 @@ class FileCreatorHelper {
                   sb.writeln(l);
                 }
               }
-              if (l == '  RouteNames._();') {
-                sb.writeln("  static const ${CaseUtil.getCamelcase(screenName, capitalizeFirstLetter: false)}Screen = '$screenName';");
-              }
             },
           ),
         );
     mainNavigatorFile.writeAsStringSync(sb.toString());
+  }
+
+  static Future<void> updateRouteNames(String screenName) async {
+    final routeNameFile = File(join('lib', 'navigator', 'route_names.dart'));
+    if (!routeNameFile.existsSync()) {
+      print(
+          '`lib/navigator/route_names.dart` does not exists. Can not add navigation logic.');
+      return;
+    }
+
+    final sb = StringBuffer();
+    await routeNameFile.readAsString().then(
+          (value) => (value) => const LineSplitter().convert(value).forEach(
+                (l) {
+                  sb.writeln(l);
+                  if (l == '  RouteNames._();') {
+                    sb.writeln(
+                        "  static const ${CaseUtil.getCamelcase(screenName, capitalizeFirstLetter: false)}Screen = '$screenName';");
+                  }
+                },
+              ),
+        );
+    routeNameFile.writeAsStringSync(sb.toString());
   }
 
   static Future<void> updateMainNavigation(

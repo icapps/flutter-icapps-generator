@@ -80,9 +80,3 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget>
   @override
   void goBack<T>({T? result}) => navigationKey.currentState?.pop(result);
 }
-
-class RouteNames {
-  RouteNames._();
-  static const testingScreen = 'testing';
-  static const userDetailScreen = 'user_detail';
-}

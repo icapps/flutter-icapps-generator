@@ -62,6 +62,7 @@ Future<void> main(List<String>? args) async {
     await FileCreatorHelper.updateMainNavigator(params.projectName, screenName);
     await FileCreatorHelper.updateMainNavigation(
         params.projectName, screenName);
+    await FileCreatorHelper.updateRouteNames(screenName);
   }
   print('');
   if (generateDI) {
