@@ -160,7 +160,7 @@ class FileCreatorHelper {
 
     final sb = StringBuffer();
     await routeNameFile.readAsString().then(
-          (value) => (value) => const LineSplitter().convert(value).forEach(
+          (value) => const LineSplitter().convert(value).forEach(
                 (l) {
                   sb.writeln(l);
                   if (l == '  RouteNames._();') {
