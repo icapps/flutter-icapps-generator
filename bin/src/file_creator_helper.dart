@@ -64,7 +64,7 @@ class FileCreatorHelper {
       ..writeln()
       ..writeln(
           'class ${CaseUtil.getCamelcase(screenName)}Screen extends StatefulWidget {')
-      ..writeln('  static const String routeName = RouteNames.$screenName;')
+      ..writeln('  static const String routeName = RouteNames.${CaseUtil.getCamelcase(screenName)};')
       ..writeln()
       ..writeln(
           '  const ${CaseUtil.getCamelcase(screenName)}Screen({Key? key}) : super(key: key);')
@@ -144,7 +144,7 @@ class FileCreatorHelper {
                 }
               }
               if (l == '  RouteNames._();') {
-                sb.writeln("  static const $screenName = '${CaseUtil.seperateWithUnderscore(screenName)}';");
+                sb.writeln("  static const ${CaseUtil.getCamelcase(screenName)} = '$screenName';");
               }
             },
           ),
