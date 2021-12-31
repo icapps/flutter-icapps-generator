@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:icapps_generator_example/navigator/main_navigator.dart';
 import 'package:icapps_generator_example/viewmodel/testing/testing_viewmodel.dart';
 import 'package:icapps_generator_example/widget/provider/provider_widget.dart';
 
 class TestingScreen extends StatefulWidget {
-  static const String routeName = 'testing';
+  static const String routeName = RouteNames.testingScreen;
 
   const TestingScreen({Key? key}) : super(key: key);
 

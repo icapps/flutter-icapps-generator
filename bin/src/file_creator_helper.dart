@@ -54,6 +54,7 @@ class FileCreatorHelper {
           "import 'package:$projectName/viewmodel/$screenName/${screenName}_viewmodel.dart';")
       ..writeln(
           "import 'package:$projectName/widget/provider/provider_widget.dart';")
+      ..writeln("import 'package:$projectName/navigator/main_navigator.dart';")
       ..writeln("import 'package:flutter/material.dart';");
     if (generateDI) {
       sb.writeln("import 'package:get_it/get_it.dart';");
@@ -63,7 +64,7 @@ class FileCreatorHelper {
       ..writeln()
       ..writeln(
           'class ${CaseUtil.getCamelcase(screenName)}Screen extends StatefulWidget {')
-      ..writeln("  static const String routeName = '$screenName';")
+      ..writeln('  static const String routeName = RouteNames.$screenName;')
       ..writeln()
       ..writeln(
           '  const ${CaseUtil.getCamelcase(screenName)}Screen({Key? key}) : super(key: key);')
@@ -129,6 +130,11 @@ class FileCreatorHelper {
                 sb
                   ..writeln(
                       '  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState?.pushReplacementNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
+                  ..writeln();
+              }
+              if(l == '  RouteNames._();'){
+                sb
+                  ..writeln("  static const testingScreen = '${CaseUtil.seperateWithUnderscore(screenName)}';")
                   ..writeln();
               }
               if (l !=

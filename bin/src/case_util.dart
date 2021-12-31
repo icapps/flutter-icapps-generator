@@ -9,6 +9,8 @@ class CaseUtil {
     return wordsGroup.map(_upperCaseFirstLetter).toList().join('');
   }
 
+  static String seperateWithUnderscore(String string) => _groupIntoWords(string).join('_');
+
   static List<String> _groupIntoWords(String text) {
     final sb = StringBuffer();
     final words = <String>[];
