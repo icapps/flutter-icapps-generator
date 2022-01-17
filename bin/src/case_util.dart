@@ -4,9 +4,14 @@ class CaseUtil {
 
   CaseUtil._();
 
-  static String getCamelcase(String string) {
+  static String getCamelcase(String string, {bool capitalizeFirstLetter = true}) {
     final wordsGroup = _groupIntoWords(string);
-    return wordsGroup.map(_upperCaseFirstLetter).toList().join('');
+    return wordsGroup
+        .map(
+          (value) => capitalizeFirstLetter ? _upperCaseFirstLetter(value) : (value == wordsGroup.first ? value.toLowerCase() : _upperCaseFirstLetter(value)),
+        )
+        .toList()
+        .join('');
   }
 
   static List<String> _groupIntoWords(String text) {
