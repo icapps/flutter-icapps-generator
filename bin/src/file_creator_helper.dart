@@ -50,16 +50,16 @@ class FileCreatorHelper {
   static void createScreenFile(String projectName, String screenName,
       {required bool generateDI}) {
     final sb = StringBuffer()
-      ..writeln(
-          "import 'package:$projectName/viewmodel/$screenName/${screenName}_viewmodel.dart';")
-      ..writeln(
-          "import 'package:$projectName/widget/provider/provider_widget.dart';")
-      ..writeln("import 'package:$projectName/navigator/route_names.dart';")
       ..writeln("import 'package:flutter/material.dart';");
     if (generateDI) {
       sb.writeln("import 'package:get_it/get_it.dart';");
     }
     sb
+      ..writeln("import 'package:$projectName/navigator/route_names.dart';")
+      ..writeln(
+          "import 'package:$projectName/viewmodel/$screenName/${screenName}_viewmodel.dart';")
+      ..writeln(
+          "import 'package:$projectName/widget/provider/provider_widget.dart';")
       ..writeln()
       ..writeln()
       ..writeln(
@@ -105,11 +105,7 @@ class FileCreatorHelper {
       return;
     }
 
-    final sb = StringBuffer()
-      ..writeln(
-          "import 'package:$projectName/screen/$screenName/${screenName}_screen.dart';")
-      ..writeln(
-          "import 'package:$projectName/widget/general/flavor_banner.dart';");
+    final sb = StringBuffer();
     var writeOnGenerateRoute = false;
     var overrideMissing = false;
     await mainNavigatorFile.readAsString().then(
@@ -133,16 +129,13 @@ class FileCreatorHelper {
                       '  void goTo${CaseUtil.getCamelcase(screenName)}() => navigationKey.currentState?.pushReplacementNamed(${CaseUtil.getCamelcase(screenName)}Screen.routeName);')
                   ..writeln();
               }
-              if (l !=
-                  "import 'package:$projectName/widgets/general/flavor_banner.dart';") {
-                if (overrideMissing) {
-                  overrideMissing = false;
-                  sb
-                    ..writeln('  @override')
-                    ..writeln(l);
-                } else {
-                  sb.writeln(l);
-                }
+              if (overrideMissing) {
+                overrideMissing = false;
+                sb.writeln('  @override');
+              }
+              sb.writeln(l);
+              if(l == "import 'package:icapps_generator_example/navigator/main_navigation.dart';"){
+               sb.writeln("import 'package:$projectName/screen/$screenName/${screenName}_screen.dart';");
               }
             },
           ),
