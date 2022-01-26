@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:icapps_generator_example/navigator/route_names.dart';
 import 'package:icapps_generator_example/viewmodel/user_detail/user_detail_viewmodel.dart';
 import 'package:icapps_generator_example/widget/provider/provider_widget.dart';
 
 class UserDetailScreen extends StatefulWidget {
-  static const String routeName = 'user_detail';
+  static const String routeName = RouteNames.userDetailScreen;
 
   const UserDetailScreen({Key? key}) : super(key: key);
 

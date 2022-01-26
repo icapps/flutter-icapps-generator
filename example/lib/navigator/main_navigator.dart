@@ -72,12 +72,10 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget>
       ?.pushReplacementNamed(UserDetailScreen.routeName);
 
   @override
-  void goToTesting() =>
-      navigationKey.currentState?.pushReplacementNamed(TestingScreen.routeName);
+  void goToTesting() => navigationKey.currentState?.pushReplacementNamed(TestingScreen.routeName);
 
   @override
-  void closeDialog<T>({T? result}) =>
-      Navigator.of(context, rootNavigator: true).pop(result);
+  void closeDialog<T>({T? result}) => Navigator.of(context, rootNavigator: true).pop(result);
 
   @override
   void goBack<T>({T? result}) => navigationKey.currentState?.pop(result);
