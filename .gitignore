@@ -6,6 +6,7 @@
 .settings/
 *.iml
 **/build
+**/example/.flutter-*
 **/packages
 **/pubspec.lock
 **/.packages
