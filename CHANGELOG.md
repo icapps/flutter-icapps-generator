@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0] - 2023-10-13
+### Breaking
+- #28 update dependencies
+- Upgrade of pre 1.12 Android
+- Updated pods/podfile
+- Increased minimum versions for Android to minSDK 23 and iOS to 11
+
 ## [0.3.0] - 2020-01-08
 ### Fixed
 - #14 where provider changed builder to create 
@@ -20,12 +27,12 @@
 
 ## [0.1.0] - 2019-09-18
 ### Fixed
--Fixed a bug where viewmodels and screens were used for imports instead of viewmodel, screen
+- Fixed a bug where viewmodels and screens were used for imports instead of viewmodel, screen
 
 ## [0.0.2] - 2019-09-18
 ### Fixed
--Fixed some pub.dev warnings for maintenance
+- Fixed some pub.dev warnings for maintenance
 
 ## [0.0.1] - 2019-09-18
 ### Added
--Initial release
+- Initial release
